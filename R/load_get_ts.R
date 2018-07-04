@@ -1,6 +1,6 @@
 #' This wraps a GET request to the API
 #' 
-#' @description Function to download load data with security token from ENTSO-E.
+#' @description Function to download load data
 #' @param documentType The coded type of the document being sent. The 
 #'     document type identifies the principal characteristic of the 
 #'     status request. Refer to ENTSO-E 

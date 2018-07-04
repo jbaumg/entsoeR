@@ -15,7 +15,7 @@ generation_get_ts(documentType = NULL, processType = NULL,
   periodEnd = NULL, securityToken = NULL)
 }
 \description{
-function to download generation data in a "time series" format
+function to download generation data in a "time series" format (dates, generation)
 }
 \details{
 There's a limit of 200 documents, so the API will return an

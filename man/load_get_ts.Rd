@@ -24,5 +24,5 @@ This information is mandatory. There's no dependency
 requirements.}
 }
 \description{
-Function to download load data with security token from ENTSO-E.
+Function to download load data
 }
