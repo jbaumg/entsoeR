@@ -22,6 +22,7 @@
 #' @param periodStart
 #' @param periodEnd
 #' @param securityToken
+#' @export
 
 generation_get_ts <- function(documentType = NULL,
                         processType = NULL,

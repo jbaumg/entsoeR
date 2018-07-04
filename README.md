@@ -20,7 +20,7 @@ You can install entsoeR from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("krose/entsoeR")
+devtools::install_github("jbaumg/entsoeR")
 ```
 
 Example

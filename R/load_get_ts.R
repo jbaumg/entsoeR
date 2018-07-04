@@ -25,6 +25,7 @@
 #' @param periodStart
 #' @param periodEnd
 #' @param securityToken
+#' @export
 
 load_get_ts<-function (documentType = NULL, processType = NULL, businessType = NULL, 
     psrType = NULL, type_MarketAgreement.Type = NULL, contract_MarketAgreement.Type = NULL, 
