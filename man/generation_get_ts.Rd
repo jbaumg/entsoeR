@@ -2,7 +2,7 @@
 % Please edit documentation in R/generation_get_ts.R
 \name{generation_get_ts}
 \alias{generation_get_ts}
-\title{This wraps a GET request to the API}
+\title{time series version of generation_get}
 \usage{
 generation_get_ts(documentType = NULL, processType = NULL,
   businessType = NULL, psrType = NULL, type_MarketAgreement.Type = NULL,
@@ -16,8 +16,4 @@ generation_get_ts(documentType = NULL, processType = NULL,
 }
 \description{
 function to download generation data in a "time series" format (dates, generation)
-}
-\details{
-There's a limit of 200 documents, so the API will return an
-error if this limit is reached.
 }
