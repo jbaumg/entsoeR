@@ -1,8 +1,4 @@
-#' This wraps a GET request to the API
-#' 
-#' There's a limit of 200 documents, so the API will return an
-#' error if this limit is reached.
-#'
+#' time series version of generation_get
 #' @description function to download generation data in a "time series" format (dates, generation)
 #' @param documentType
 #' @param processType
@@ -279,9 +275,10 @@ generation_helper <- function(html_doc){
   
   # assign the time series to the doc result to keep the document structure.
   doc_result$time_series <- list(time_series)
+  tms<-time_series
   
    doc_result
-   tm1<-sapply(seq(1,length(time_series$period),1),function(i){
+   tm1<-sapply(seq(1,length(time_series$period)/2,1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
      vals<-c(time_series$period[[i]]$point)
@@ -289,7 +286,7 @@ generation_helper <- function(html_doc){
 
    })
 
-   dates<-as.vector(unlist(sapply(seq(1,length(time_series$period),1),function(i){
+   dates<-as.vector(unlist(sapply(seq(1,length(time_series$period)/2,1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
      #time<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by="hours")[-1]
@@ -303,6 +300,6 @@ generation_helper <- function(html_doc){
 
    #time<-seq.POSIXt(as.POSIXct(paste(paste(substr(periodStart,1,4),substr(periodStart,5,6),substr(periodStart,7,8),sep="/"),paste(substr(substr(periodStart,9,12),1,2),substr(substr(periodStart,9,12),3,4),sep=":"),sep=" ")),as.POSIXct(paste(paste(substr(periodEnd,1,4),substr(periodEnd,5,6),substr(periodEnd,7,8),sep="/"),paste(substr(substr(periodEnd,9,12),1,2),substr(substr(periodEnd,9,12),3,4),sep=":"),sep=" ")), by = "hours")
 
-   tm<-as_tibble(data.frame(as.POSIXct(dates,origin = "1970-01-01"),tm2))
-   names(tm)<-c("dates","generation")
+   tm<-data.frame(dates,tm2)
+   return(tm)
 }

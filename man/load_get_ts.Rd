@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_get_ts.R
 \name{load_get_ts}
 \alias{load_get_ts}
-\title{This wraps a GET request to the API}
+\title{time series version of load_get}
 \usage{
 load_get_ts(documentType = NULL, processType = NULL, businessType = NULL,
   psrType = NULL, type_MarketAgreement.Type = NULL,
@@ -24,5 +24,5 @@ This information is mandatory. There's no dependency
 requirements.}
 }
 \description{
-Function to download load data
+Function to download load data in a "time series" format (dates, generation)
 }
