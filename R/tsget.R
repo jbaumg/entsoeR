@@ -27,7 +27,7 @@
 #' @export
 
 
-tsget<-function(type,dateseq,documentType, processType, psrType, in_Domain, outBiddingZone_Domain = "10YCZ-CEPS-----N", securityToken)
+tsget<-function(type = NULL, dateseq = NULL, documentType = NULL, processType = NULL, psrType = NULL, in_Domain = NULL, outBiddingZone_Domain = NULL, securityToken = NULL)
 {
 
 if(is.null(securityToken)){stop("needs security token")}
