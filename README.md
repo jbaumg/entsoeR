@@ -26,8 +26,15 @@ devtools::install_github("jbaumg/entsoeR")
 Example
 -------
 
-This is a basic example which shows you how to solve a common problem:
+Basic example on how to use "tsget":
 
 ``` r
-## basic example code
+## tsget-function
+tsget(type="generation",
+          dateseq=seq.POSIXt(as.POSIXct("2015-01-01"),as.POSIXct("2016-12-31"),by="day"),
+          documentType = "A74",
+          processType = "A16",
+          psrType = "B19",
+          in_Domain = "10Y1001A1001A83F",
+          securityToken = ENTSOE_PAT)
 ```
