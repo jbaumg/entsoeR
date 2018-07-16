@@ -38,7 +38,7 @@ if(type=="load"){
       uniy<-unique(year(dateseq))  
       datelist<-data.frame(matrix(sapply(1:length(uniy),function(i){
       dtsq<-dateseq[year(dateseq)==uniy[i]]
-      c(substr(gsub("-|:| ","",as.character(dtsq[1]+3600)),1,12),substr(gsub("-|:| ","",as.character(dtsq[length(dtsq)]+(25*3600)+1)),1,12))
+      c(substr(gsub("-|:| ","",as.character(dtsq[1]+3600)),1,12),substr(gsub("-|:| ","",as.character(dtsq[length(dtsq)]+(23*3600)+1)),1,12))
       }),ncol=2,byrow=TRUE))
 
       names(datelist)<-c("s","e")
@@ -53,7 +53,7 @@ if(type=="load"){
          securityToken = ENTSOE_PAT)
       }),data.frame)
       names(loadts)<-c("dates","load")
-      loadts$dates<-as.POSIXct(loadts$dates,origin = origin)
+      loadts$dates<-as.POSIXct(loadts$dates + 7200,origin = origin)
   }
  return(as_tibble(loadts))
 } 
