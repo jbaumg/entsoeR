@@ -278,6 +278,8 @@ generation_helper <- function(html_doc){
   tms<-time_series
   
    doc_result
+  
+  if(substr(time_series$period[[1]]$resolution,3,4)=="15"){
    tm1<-sapply(seq(1,length(time_series$period)/2,1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
@@ -289,7 +291,20 @@ generation_helper <- function(html_doc){
    dates<-as.vector(unlist(sapply(seq(1,length(time_series$period)/2,1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
-   })))
+   })))}else{
+
+   tm1<-sapply(seq(1,length(time_series$period),1),function(i){
+     tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
+     times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
+     vals<-c(time_series$period[[i]]$point)
+     #dat<-as_tibble(data.frame(time,vals))
+
+   })
+
+   dates<-as.vector(unlist(sapply(seq(1,length(time_series$period),1),function(i){
+     tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
+     times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
+   })))}
 
 
 
