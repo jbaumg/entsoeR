@@ -297,9 +297,7 @@ generation_helper <- function(html_doc){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
      vals<-c(time_series$period[[i]]$point)
-     #dat<-as_tibble(data.frame(time,vals))
-
-   })
+     })
 
    dates<-as.vector(unlist(sapply(seq(1,length(time_series$period),1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
