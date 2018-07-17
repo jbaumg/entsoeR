@@ -27,66 +27,69 @@
 #' @export
 
 
-tsget<-function(type = NULL, dateseq = NULL, documentType = NULL, processType = NULL, psrType = NULL, in_Domain = NULL, outBiddingZone_Domain = NULL, securityToken = NULL)
+tsget<-function (type = NULL, dateseq = NULL, documentType = NULL, 
+  processType = NULL, psrType = NULL, in_Domain = NULL, outBiddingZone_Domain = NULL, 
+  securityToken = NULL) 
 {
-
-if(is.null(securityToken)){stop("needs security token")}
-  
-if(type=="load"){
-  if(is.null(documentType)||is.null(processType)||is.null(dateseq)||is.null(outBiddingZone_Domain)){ stop("needs documentType, processType, outBiddingZone_Domain and time period information")}
-  else{
-      uniy<-unique(year(dateseq))  
-      datelist<-data.frame(matrix(sapply(1:length(uniy),function(i){
-      dtsq<-dateseq[year(dateseq)==uniy[i]]
-      c(substr(gsub("-|:| ","",as.character(dtsq[1]+3600)),1,12),substr(gsub("-|:| ","",as.character(dtsq[length(dtsq)]+(23*3600)+1)),1,12))
-      }),ncol=2,byrow=TRUE))
-
-      names(datelist)<-c("s","e")
-
-      loadts<-ldply(lapply(1:length(datelist$s),function(i){
-         
-         load_get_ts(documentType = documentType, 
-         processType = processType, 
-         periodStart = datelist$s[i], 
-         periodEnd = datelist$e[i], 
-         outBiddingZone_Domain = outBiddingZone_Domain,
-         securityToken = ENTSOE_PAT)
-      }),data.frame)
-      names(loadts)<-c("dates","load")
-      loadts$dates<-as.POSIXct(loadts$dates + 7200,origin = origin)
+  if (is.null(securityToken)) {
+    stop("needs security token")
   }
- return(as_tibble(loadts))
-} 
-
-if(type=="generation"){
-  
-  if(is.null(documentType)||is.null(processType)||is.null(psrType)||is.null(in_Domain)||is.null(dateseq)){ stop("needs documentType, processType, psrType, in_Domain and time period information")}
-  else{
-    
-    uniy<-unique(year(dateseq))  
-    datelist<-data.frame(matrix(sapply(1:length(uniy),function(i){
-    dtsq<-dateseq[year(dateseq)==uniy[i]]
-    c(substr(gsub("-|:| ","",as.character(dtsq[1]-3600)),1,12),substr(gsub("-|:| ","",as.character(dtsq[length(dtsq)]+(23*3600))),1,12))
-    }),ncol=2,byrow=TRUE))
-
-    names(datelist)<-c("s","e")  
-    generationts<- ldply(lapply(1:length(datelist$s),function(i){
+  if (type == "load") {
+    if (is.null(documentType) || is.null(processType) || 
+      is.null(dateseq) || is.null(outBiddingZone_Domain)) {
+      stop("needs documentType, processType, outBiddingZone_Domain and time period information")
+    }
+    else {
+      uniy <- unique(year(dateseq))
+      datelist <- data.frame(matrix(sapply(1:length(uniy), 
+        function(i) {
+          dtsq <- dateseq[year(dateseq) == uniy[i]]
+          c(substr(gsub("-|:| ", "", as.character(dtsq[1]+1 
+            )), 1, 12), substr(gsub("-|:| ", "", 
+            as.character(dtsq[length(dtsq)] + (24 * 
+              3600) + 1)), 1, 12))
+        }), ncol = 2, byrow = TRUE))
+      names(datelist) <- c("s", "e")
+      loadts <- ldply(lapply(1:length(datelist$s), function(i) {
+        load_get_ts(documentType = documentType, processType = processType, 
+          periodStart = datelist$s[i], periodEnd = datelist$e[i], 
+          outBiddingZone_Domain = outBiddingZone_Domain, 
+          securityToken = ENTSOE_PAT)
+      }), data.frame)
+      names(loadts) <- c("dates", "load")
+      if(as.numeric(loadts$dates[1])-as.numeric(loadts$dates[2])==-3600){loadts$dates <- as.POSIXct(loadts$dates+3600, origin = origin,tz="GMT")}else
+        {loadts$dates <- as.POSIXct(loadts$dates+900, origin = origin, tz="GMT")}
       
-               wg<-generation_get_ts(documentType = "A74",
-               processType = processType,
-               psrType = psrType,
-               in_Domain = in_Domain,
-               periodStart = datelist$s[i],
-               periodEnd = datelist$e[i],
-               securityToken = ENTSOE_PAT)
-
-}),data.frame)
-   names(generationts)<-c("dates","generation")
-   generationts$dates<-as.POSIXct(generationts$dates,origin = origin)
+    }
+    return(as_tibble(loadts))
   }
-  return(as_tibble(generationts))
-} 
-  
-    
+  if (type == "generation") {
+    if (is.null(documentType) || is.null(processType) || 
+      is.null(psrType) || is.null(in_Domain) || is.null(dateseq)) {
+      stop("needs documentType, processType, psrType, in_Domain and time period information")
+    }
+    else {
+      uniy <- unique(year(dateseq))
+      datelist <- data.frame(matrix(sapply(1:length(uniy), 
+        function(i) {
+          dtsq <- dateseq[year(dateseq) == uniy[i]]
+          c(substr(gsub("-|:| ", "", as.character(dtsq[1] + 1
+                                                  )), 1, 12), substr(gsub("-|:| ", "", 
+            as.character(dtsq[length(dtsq)] + (24 * 
+              3600)+1)), 1, 12))
+        }), ncol = 2, byrow = TRUE))
+      names(datelist) <- c("s", "e")
+      generationts <- ldply(lapply(1:length(datelist$s), 
+        function(i) {
+          wg <- generation_get_ts(documentType = "A74", 
+            processType = processType, psrType = psrType, 
+            in_Domain = in_Domain, periodStart = datelist$s[i], 
+            periodEnd = datelist$e[i], securityToken = ENTSOE_PAT)
+        }), data.frame)
+      names(generationts) <- c("dates", "generation")
+      generationts$dates <- as.POSIXct(generationts$dates, 
+        origin = origin, tz="GMT")
+    }
+    return(as_tibble(generationts))
+  }
 }
-
