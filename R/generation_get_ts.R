@@ -289,7 +289,6 @@ generation_helper <- function(html_doc){
    dates<-as.vector(unlist(sapply(seq(1,length(time_series$period)/2,1),function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
-     #time<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by="hours")[-1]
    })))
 
 
@@ -297,8 +296,6 @@ generation_helper <- function(html_doc){
    tm2<-unlist(sapply(1:length(tm1),function(i){
      c(tm1[[i]]$quantity)
    }))
-
-   #time<-seq.POSIXt(as.POSIXct(paste(paste(substr(periodStart,1,4),substr(periodStart,5,6),substr(periodStart,7,8),sep="/"),paste(substr(substr(periodStart,9,12),1,2),substr(substr(periodStart,9,12),3,4),sep=":"),sep=" ")),as.POSIXct(paste(paste(substr(periodEnd,1,4),substr(periodEnd,5,6),substr(periodEnd,7,8),sep="/"),paste(substr(substr(periodEnd,9,12),1,2),substr(substr(periodEnd,9,12),3,4),sep=":"),sep=" ")), by = "hours")
 
    tm<-data.frame(dates,tm2)
    return(tm)
