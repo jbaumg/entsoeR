@@ -81,7 +81,7 @@ load_get_ts<-function (documentType = NULL, processType = NULL, businessType = N
     final_url <- paste0(final_url, "&periodStart=", periodStart)
   if (!is.null(periodEnd)) 
     final_url <- paste0(final_url, "&periodEnd=", periodEnd)
-  e_request <<- httr::GET(url = final_url)
+  e_request <- httr::GET(url = final_url)
   if (httr::status_code(e_request) != 200) {
     stop(paste0(httr::http_status(e_request)$category, ". ", 
       httr::http_status(e_request)$reason, ". ", httr::http_status(e_request)$message, 
