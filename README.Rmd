@@ -51,3 +51,24 @@ tsget(type="generation",
           in_Domain = "10Y1001A1001A83F",
           securityToken = ENTSOE_PAT)
 ```
+Useful parameters:
+
+```{r example}
+domains: 10YAT-APG------L Austria, APG CA / MBA
+         10Y1001A1001A83F Germany
+         10YPT-REN------W Portugal, REN BZ / CA / MBA
+         10YFR-RTE------C France, RTE BZ / CA / MBA
+         10YSE-1--------K Sweden, Sweden MBA, SvK CA
+
+psrType: B10 = Hydro Pumped Storage
+         B11 = Hydro Run-of-river and poundage
+         B12 = Hydro Water Reservoir
+         B16 = Solar
+         B19 = Wind Onshore
+
+documentType: A65 = total system load
+processType: A16 = realised data as opposed to forecast data
+
+documentType: A73 = actual generation
+processType: A16 = realised generation as opposed to forecast data
+```
