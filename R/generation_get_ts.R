@@ -279,8 +279,12 @@ generation_helper <- function(html_doc){
   
    doc_result
   
+  periodsl<-which(sapply(1:length(tms$period),function(i){
+    mean(tms$period[[i]]$point[[1]]$quantity)!=0
+  })==TRUE)
+  
   if(substr(time_series$period[[1]]$resolution,3,4)=="15"){
-   tm1<-sapply(seq(1,length(time_series$period)/2,1),function(i){
+     tm1<-sapply(periodsl,function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
      vals<-c(time_series$period[[i]]$point)
@@ -288,7 +292,7 @@ generation_helper <- function(html_doc){
 
    })
 
-   dates<-as.vector(unlist(sapply(seq(1,length(time_series$period)/2,1),function(i){
+   dates<-as.vector(unlist(sapply(periodsl,function(i){
      tres<-paste(substr(time_series$period[[i]]$resolution,3,4),"mins")
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
    })))}else{
