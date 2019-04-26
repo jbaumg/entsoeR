@@ -38,6 +38,8 @@ generation_get_ts <- function(documentType = NULL,
                         timeInterval = NULL,
                         periodStart = NULL,
                         periodEnd = NULL,
+                        dtsst = NULL, 
+                        dtsend = NULL,
                         securityToken = NULL){
   
   final_url <- entsoe_create_url(documentType = documentType,
@@ -93,7 +95,7 @@ generation_get_ts <- function(documentType = NULL,
     # not tested yet.
     html_doc <- httr::content(e_request, as = "text", encoding = "UTF-8")
     
-    e_content <- generation_helper(html_doc = html_doc)
+    e_content <- generation_helper(html_doc = html_doc,dtsst,dtsend)
     
   } else {
     
@@ -105,7 +107,7 @@ generation_get_ts <- function(documentType = NULL,
 
 
 
-generation_helper <- function(html_doc){
+generation_helper <- function(html_doc,dtsst,dtsend){
   
   html_doc <- html_doc %>% 
     xml2::read_html(encoding = "UTF-8") %>% 
@@ -277,10 +279,10 @@ generation_helper <- function(html_doc){
   doc_result$time_series <- list(time_series)
   tms<-time_series
   
-   doc_result
+  doc_result
   
   periodsl<-which(sapply(1:length(tms$period),function(i){
-    mean(tms$period[[i]]$point[[1]]$quantity)!=0
+    length(which(tms$period[[i]]$point[[1]]$quantity==0))<=0.9*length(tms$period[[i]]$point[[1]]$quantity)
   })==TRUE)
   
   if(substr(time_series$period[[1]]$resolution,3,4)=="15"){
@@ -308,12 +310,23 @@ generation_helper <- function(html_doc){
      times<-seq.POSIXt(as.POSIXct(time_series$period[[i]]$start),as.POSIXct(time_series$period[[i]]$end),by=tres)[-1]
    })))}
 
-
-
    tm2<-unlist(sapply(1:length(tm1),function(i){
      c(tm1[[i]]$quantity)
    }))
-
-   tm<-data.frame(dates,tm2)
+   
+   tres<-paste(substr(time_series$period[[1]]$resolution,3,4),"mins")
+    
+   dseq<-seq.POSIXt(as.POSIXct(dtsst),as.POSIXct(dtsend),by=tres)
+   NAs<-rep("NA",length(dseq))
+   
+   tmx<-data.frame(dseq,NAs)[-1,]
+   names(tmx)<-c("dates","generation")
+   
+   tm<-data.frame(as.POSIXct(dates,origin=origin),tm2)
+   names(tm)<-c("dates","generation")
+  
+   tm<-left_join(tmx,tm,by="dates")[,-2]
+   names(tm)<-c("dates","generation")
+   
    return(tm)
 }
